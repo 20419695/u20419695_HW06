@@ -1,0 +1,62 @@
+﻿@model IPagedList<u20419695_HW06.Models.product>
+
+@{
+    ViewBag.Title = "Products";
+}
+@using PagedList.Mvc;
+@using PagedList;
+
+<h2>Products</h2>
+
+@using (Html.BeginForm("Index", "products", FormMethod.Get)) 
+{ 
+<input type="text" name="search" placeholder="Enter Product Name..." />
+<input type="submit" name="submit" value="Search" />
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.First().product_name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().model_year)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().list_price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().brand.brand_name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.First().category.category_name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.product_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.model_year)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.list_price)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.brand.brand_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.category.category_name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.product_id }) |
+            @Html.ActionLink("Details", "Details", new { id=item.product_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.product_id })
+        </td>
+    </tr>
+}
+
+</table>
+@Html.PagedListPager(Model, i => Url.Action("Index", "products", new { i, search = Request.QueryString["search"] }))
